@@ -8,8 +8,23 @@
 <link rel="stylesheet" href="css/layout.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/cloud.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div class="login-screen show" id="loginScreen">
+  <div class="login-card">
+    <div class="brand login-brand">intelly</div>
+    <h2>Sign in to sync your ledger</h2>
+    <p>Your data is saved as a file named <b>Intelly-ledger.json</b> in your own Google Drive. Intelly can only open that one file, nothing else in your Drive.</p>
+    <button class="pill pill-black" id="googleSignIn">Continue with Google</button>
+    <p class="login-msg" id="loginMsg"></p>
+    <button class="link-btn" id="offlineBtn">Use on this device only</button>
+  </div>
+</div>
+
 <div class="app-shell">
 
   <!-- ============ SIDEBAR ============ -->
@@ -48,6 +63,7 @@
       <div class="greet-row">
         <h1>Welcome, <span id="greetName">Dewansh</span></h1>
         <div class="greet-actions">
+          <span class="sync-status mono" id="syncStatus">Not signed in</span>
           <button class="pill pill-black" id="addMenuBtn">+ Add event</button>
           <button class="icon-btn" id="todayJump" title="Refresh / jump to today">↻</button>
           <div class="add-popover" id="addPopover">
@@ -114,13 +130,19 @@
     <!-- ---------- Settings ---------- -->
     <section class="page" id="page-settings">
       <div class="panel">
-        <div class="panel-head"><h3>Backup</h3></div>
+        <div class="panel-head"><h3>Google Drive</h3></div>
+        <div id="driveAccount" class="wallet-note" style="margin:0 0 12px;">Not signed in.</div>
         <div style="display:flex;gap:10px;">
-          <button class="pill pill-ghost" style="flex:1" id="btnExport">Export</button>
-          <button class="pill pill-ghost" style="flex:1" id="btnImportTrigger">Import</button>
-          <input type="file" id="fileImport" accept="application/json" style="display:none">
+          <button class="pill pill-ghost" style="flex:1" id="btnBackupNow">Back up now</button>
+          <button class="pill pill-ghost" style="flex:1" id="btnRestore">Restore from Drive</button>
         </div>
-        <p style="font-size:11.5px;color:var(--ink-soft);margin-top:10px;">Importing accepts files exported from the old single-file Ledger too.</p>
+        <p style="font-size:11.5px;color:var(--ink-soft);margin:12px 0 0;line-height:1.5;">
+          Changes are saved automatically a couple of seconds after you make them. Your data is the file <b>Intelly-ledger.json</b> in My Drive, so you can open, download or share it from drive.google.com.
+        </p>
+        <p style="font-size:11.5px;color:var(--ink-soft);margin:10px 0 0;">
+          Have an old backup file? <button class="link-btn" id="btnImportTrigger">Import it once</button>
+          <input type="file" id="fileImport" accept="application/json" style="display:none">
+        </p>
       </div>
       <div class="panel" style="margin-top:16px;">
         <div class="panel-head"><h3>By category, all time</h3></div>

@@ -10,7 +10,8 @@ function blank(){
     taskCats:['Work','Personal','Study'], expCats:['Food','Travel','Bills','Shopping'],
     payees:['Shopkeeper','Friend','Family','Online'],
     filters:{ task:['Work','Personal','Study'], exp:['Food','Travel','Bills','Shopping'] },
-    savingsMoves:[], borrows:[], lenders:['Friend','Family','Classmate','Other']
+    savingsMoves:[], borrows:[], lenders:['Friend','Family','Classmate','Other'],
+    updatedAt:0
   };
 }
 
@@ -19,8 +20,7 @@ function load(){
     const s = JSON.parse(localStorage.getItem(KEY));
     if (s) return s;
   }catch(e){}
-  // migrate from the old single-file version if present, so your exported
-  // backup (or the old in-browser data) carries straight over
+  // migrate from the old single-file version if present
   try{
     const old = JSON.parse(localStorage.getItem('ledger_app_state_v1'));
     if (old) return mergeIntoBlank(old);
@@ -42,17 +42,19 @@ function mergeIntoBlank(data){
 export let state = load();
 
 export function save(){
+  state.updatedAt = Date.now();
   try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){ console.error('save failed', e); }
   window.dispatchEvent(new CustomEvent('store:change'));
   pushCloud();
 }
 
-export function exportData(){
-  const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'ledger-export-' + todayISO + '.json'; a.click();
+// swap in data that came from Drive (does NOT trigger a new upload)
+export function replaceState(data){
+  state = mergeIntoBlank(data);
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){ console.error('save failed', e); }
 }
 
+// one-time import of an old backup file (it is then saved to Drive automatically)
 export function importData(file, onDone){
   const reader = new FileReader();
   reader.onload = ev => {
@@ -65,12 +67,14 @@ export function importData(file, onDone){
   reader.readAsText(file);
 }
 
-// ---------- cloud sync (Phase 2 hook — safe no-op until wired to Drive/Supabase) ----------
+// ---------- cloud sync hook (sync.js registers the handler after sign-in) ----------
 let pushTimer = null;
+let cloudHandler = null;
+export function setCloudHandler(fn){ cloudHandler = fn; }
 function pushCloud(){
-  // Placeholder for Phase 2: debounce + push `state` to whatever remote store
-  // (Supabase/Firebase/Drive) you end up wiring. Left intentionally inert for now.
   clearTimeout(pushTimer);
+  if (!cloudHandler) return;
+  pushTimer = setTimeout(() => cloudHandler(), 2000);   // wait 2s after the last change
 }
 
 // ---------- derived finance helpers (pure functions over state) ----------
