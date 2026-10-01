@@ -1,0 +1,58 @@
+/* ---------- base.css : reset, tokens, typography ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Spectral:wght@500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root{
+  /* two-tone surfaces, matching the reference */
+  --sidebar-bg:#191919;
+  --sidebar-text:#efece4;
+  --sidebar-dim:#8d8a82;
+  --sidebar-line:#2d2d2d;
+  --sidebar-hover:#242424;
+  --sidebar-active:#ffffff;
+  --sidebar-active-text:#191919;
+
+  --paper:#faf6ec;        /* cream main background */
+  --paper2:#f2ecdd;
+  --ink:#1c1a16;
+  --ink-soft:#6f6a5e;
+  --rule:#e4dcc6;
+  --rule-soft:#edE6d4;
+  --white:#ffffff;
+
+  /* pastel category cards, lifted straight from the reference */
+  --past-yellow:#f7e27f;
+  --past-yellow-ink:#5c4c0a;
+  --past-blue:#bfe3f6;
+  --past-blue-ink:#1b4f66;
+  --past-lavender:#e6d7f5;
+  --past-lavender-ink:#4a2f6b;
+  --past-pink:#f6d6e3;
+  --past-pink-ink:#6b2f49;
+  --past-grey:#e6e3dc;
+  --past-grey-ink:#3a362c;
+
+  --brick:#c25a45;
+  --forest:#5f8a5e;
+  --shadow-sm:0 1px 3px rgba(20,16,8,.06);
+  --shadow-md:0 8px 24px rgba(20,16,8,.10);
+  --radius-lg:22px;
+  --radius-md:14px;
+  --radius-sm:9px;
+  --radius-pill:999px;
+  color-scheme:light;
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0; font-family:'Work Sans',sans-serif; background:var(--paper2);
+  color:var(--ink); -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0; font-family:'Spectral',serif;}
+button,input,select,textarea{font-family:inherit; font-size:inherit;}
+button{cursor:pointer;}
+::-webkit-scrollbar{width:8px; height:8px;}
+::-webkit-scrollbar-thumb{background:var(--rule); border-radius:8px;}
+
+.mono{font-family:'IBM Plex Mono',monospace;}
+.empty{color:var(--ink-soft); font-size:12.5px; padding:8px 0;}

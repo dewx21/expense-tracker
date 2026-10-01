@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intelly — Days &amp; Spending</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="brand">intelly</div>
+      <button class="collapse-btn" id="collapseBtn">›</button>
+    </div>
+
+    <div class="nav-group-label">General</div>
+    <div class="nav-list">
+      <div class="nav-item active" data-page="dashboard"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg><span class="nav-label">Dashboard</span></div>
+      <div class="nav-item" data-page="schedule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="17" rx="3"/><path d="M3 9h18M8 2v4M16 2v4"/></svg><span class="nav-label">Schedule</span></div>
+      <div class="nav-item" data-page="statistics"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M12 20V4M20 20v-7"/></svg><span class="nav-label">Statistics &amp; reports</span></div>
+    </div>
+
+    <div class="nav-group-label">Tools</div>
+    <div class="nav-list">
+      <div class="nav-item" data-page="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009.1 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.78 15a1.65 1.65 0 00-1.51-1H3.1a2 2 0 110-4h.09A1.65 1.65 0 004.6 9.1a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 008.9 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9c.23.34.57.59 1 .7"/></svg><span class="nav-label">Settings</span></div>
+    </div>
+
+    <div class="sidebar-spacer"></div>
+    <div class="nav-item logout-item" id="logoutItem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg><span class="nav-label">Log out</span></div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <div class="header">
+      <div class="header-row">
+        <div class="searchbar">
+          <span>⌕</span>
+          <input placeholder="Search">
+          <div class="search-filters"><span>Tasks</span><span>Events</span><span>Notes</span></div>
+        </div>
+      </div>
+      <div class="greet-row">
+        <h1>Welcome, <span id="greetName">Dewansh</span></h1>
+        <div class="greet-actions">
+          <button class="pill pill-black" id="addMenuBtn">+ Add event</button>
+          <button class="icon-btn" id="todayJump" title="Refresh / jump to today">↻</button>
+          <div class="add-popover" id="addPopover">
+            <button id="addEventOpt">📅 Event</button>
+            <button id="addTaskOpt">✓ Task</button>
+            <button id="addNoteOpt">✎ Note</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------- Dashboard ---------- -->
+    <section class="page active" id="page-dashboard">
+      <div class="dash-row">
+        <div class="panel"><div class="panel-head"><h3>Wallet</h3></div><div id="walletCard"></div></div>
+        <div class="panel"><div class="panel-head"><h3>Savings</h3></div><div id="savingsCard"></div></div>
+        <div class="panel"><div class="panel-head"><h3>Borrowed money</h3></div><div id="borrowsCard"></div></div>
+      </div>
+      <button class="pill pill-ghost" style="width:100%;margin-top:16px" id="pendingBtn">Waiting to be settled <span id="pendingCnt" class="mono">0</span></button>
+    </section>
+
+    <!-- ---------- Schedule ---------- -->
+    <section class="page" id="page-schedule">
+      <div class="header-row" style="margin-bottom:14px;">
+        <span id="monthLabel" class="mono" style="font-size:13px;color:var(--ink-soft);"></span>
+      </div>
+      <div class="ribbon" id="ribbon"></div>
+      <h2 id="dayHead" class="day-title">Today</h2>
+      <div class="schedule-cols">
+        <div class="panel"><div class="panel-head"><h3>Tasks</h3></div><div id="taskList"></div></div>
+        <div class="panel">
+          <div class="panel-head"><h3>Expenses</h3><span class="mono" id="dayTotal" style="font-size:13px;">₹0</span></div>
+          <div id="expList"></div>
+        </div>
+        <div class="panel"><div class="panel-head"><h3>Notes</h3></div><div id="noteList"></div></div>
+      </div>
+    </section>
+
+    <!-- ---------- Statistics ---------- -->
+    <section class="page" id="page-statistics">
+      <div class="panel">
+        <div class="panel-head"><h3>Average spend</h3></div>
+        <div class="row2">
+          <div class="field"><label>From</label><input id="avgFrom" type="date"></div>
+          <div class="field"><label>To</label><input id="avgTo" type="date"></div>
+        </div>
+        <div class="field">
+          <label>Average per</label>
+          <div class="radio-row">
+            <label><input type="radio" name="avgUnit" value="day"> Day</label>
+            <label><input type="radio" name="avgUnit" value="week"> Week</label>
+            <label><input type="radio" name="avgUnit" value="month" checked> Month</label>
+          </div>
+        </div>
+        <button class="pill pill-black" id="avgCalc">Calculate</button>
+        <div id="avgResult" style="margin-top:16px;"></div>
+      </div>
+      <div class="panel" style="margin-top:16px;">
+        <div class="panel-head"><h3>By category, all time</h3></div>
+        <div id="statsCat"></div>
+      </div>
+    </section>
+
+    <!-- ---------- Settings ---------- -->
+    <section class="page" id="page-settings">
+      <div class="panel">
+        <div class="panel-head"><h3>Backup</h3></div>
+        <div style="display:flex;gap:10px;">
+          <button class="pill pill-ghost" style="flex:1" id="btnExport">Export</button>
+          <button class="pill pill-ghost" style="flex:1" id="btnImportTrigger">Import</button>
+          <input type="file" id="fileImport" accept="application/json" style="display:none">
+        </div>
+        <p style="font-size:11.5px;color:var(--ink-soft);margin-top:10px;">Importing accepts files exported from the old single-file Ledger too.</p>
+      </div>
+      <div class="panel" style="margin-top:16px;">
+        <div class="panel-head"><h3>By category, all time</h3></div>
+        <div id="catTotalsWidget"></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ MODALS ============ -->
+<div class="overlay" id="ovTask"><div class="modal">
+  <h3>New task</h3>
+  <div class="field"><label>Title</label><input id="tTitle" placeholder="e.g. Finish assignment"></div>
+  <div class="row2">
+    <div class="field"><label>Category</label><select id="tCat"></select>
+      <div id="tCatAdd" class="add-sub-row" style="display:none"><input id="tCatNew" placeholder="New category"><button type="button" id="tCatAddBtn">Add</button></div>
+    </div>
+    <div class="field"><label>Time (optional)</label><input id="tTime" type="time"></div>
+  </div>
+  <div class="field"><label>Description (optional)</label><textarea id="tDesc"></textarea></div>
+  <div class="field">
+    <label>Finish by</label>
+    <div class="radio-row">
+      <label><input type="radio" name="dueMode" value="none" checked> No due date</label>
+      <label><input type="radio" name="dueMode" value="days"> In N days</label>
+      <label><input type="radio" name="dueMode" value="date"> On a date</label>
+    </div>
+    <div id="tDueDaysWrap" style="display:none;margin-top:8px;"><input id="tDueDays" type="number" min="1" value="1"></div>
+    <div id="tDueDateWrap" style="display:none;margin-top:8px;"><input id="tDueDate" type="date"></div>
+  </div>
+  <div class="field">
+    <label>Subtasks</label>
+    <div id="tSubtaskList"></div>
+    <div class="add-sub-row"><input id="tSubtaskNew" placeholder="Add a subtask"><button type="button" id="tSubtaskAddBtn">Add</button></div>
+  </div>
+  <div class="modal-actions"><button class="btn-cancel" data-close="ovTask">Cancel</button><button class="btn-primary" id="saveTask">Add task</button></div>
+</div></div>
+
+<div class="overlay" id="ovExpense"><div class="modal">
+  <h3 id="expenseModalTitle">New expense</h3>
+  <div class="field"><label>Title</label><input id="eTitle" placeholder="e.g. Groceries"></div>
+  <div class="row2">
+    <div class="field"><label>Amount (₹)</label><input id="eAmt" type="number" min="0"></div>
+    <div class="field"><label>Date</label><input id="eDate" type="date"></div>
+  </div>
+  <div class="field"><label>Category</label><select id="eCat"></select>
+    <div id="eCatAdd" class="add-sub-row" style="display:none"><input id="eCatNew" placeholder="New category"><button type="button" id="eCatAddBtn">Add</button></div>
+  </div>
+  <div class="field"><label>Payment method</label><select id="ePay"><option>UPI</option><option>Card</option><option>Cash</option><option>Net Banking</option></select></div>
+  <div class="field"><label>Paid to</label><select id="ePayee"></select>
+    <div id="ePayeeAdd" class="add-sub-row" style="display:none"><input id="ePayeeNew" placeholder="e.g. Ramesh Kirana Store"><button type="button" id="ePayeeAddBtn">Add</button></div>
+  </div>
+  <div class="field"><label>Description (optional)</label><input id="eDesc"></div>
+  <p id="eFutureNote" style="display:none;font-size:11.5px;color:#a67c2e;" class="mono">Future date — this amount is pulled from your wallet now and held in Waiting until marked paid.</p>
+  <div class="modal-actions"><button class="btn-cancel" data-close="ovExpense">Cancel</button><button class="btn-primary" id="saveExpense">Add expense</button></div>
+</div></div>
+
+<div class="overlay" id="ovEvent"><div class="modal">
+  <h3>New event</h3>
+  <div class="field"><label>Title</label><input id="vTitle" placeholder="e.g. Exam prep sprint"></div>
+  <div class="field"><label>Category</label><select id="vCat"><option>Work</option><option>Personal</option><option>Study</option></select></div>
+  <div class="row2">
+    <div class="field"><label>Start</label><input id="vStart" type="date"></div>
+    <div class="field"><label>End</label><input id="vEnd" type="date"></div>
+  </div>
+  <div class="modal-actions"><button class="btn-cancel" data-close="ovEvent">Cancel</button><button class="btn-primary" id="saveEvent">Add event</button></div>
+</div></div>
+
+<div class="overlay" id="ovNote"><div class="modal">
+  <h3 id="noteModalTitle">New note</h3>
+  <div class="field"><label>Title</label><input id="nTitle" placeholder="e.g. Lecture takeaways"></div>
+  <div class="field"><label>Date</label><input id="nDate" type="date"></div>
+  <div class="field"><label>Note</label><textarea id="nBody" style="min-height:110px"></textarea></div>
+  <div class="modal-actions"><button class="btn-cancel" data-close="ovNote">Cancel</button><button class="btn-primary" id="saveNote">Add note</button></div>
+</div></div>
+
+<div class="overlay" id="ovStart"><div class="modal">
+  <h3>Starting balance</h3>
+  <div class="row2">
+    <div class="field"><label>Amount (₹)</label><input id="startAmt" type="number" min="0"></div>
+    <div class="field"><label>As of</label><input id="startDate" type="date"></div>
+  </div>
+  <div class="modal-actions"><button class="btn-cancel" data-close="ovStart">Cancel</button><button class="btn-primary" id="saveStart">Save</button></div>
+</div></div>
+
+<div class="overlay" id="ovDeposit"><div class="modal">
+  <h3>Deposit to wallet</h3>
+  <div class="field"><label>Amount (₹)</label><input id="depAmt" type="number" min="0"></div>
+  <div class="field"><label>Note (optional)</label><input id="depNote"></div>
+  <div class="modal-actions"><button class="btn-cancel" data-close="ovDeposit">Cancel</button><button class="btn-primary" id="saveDeposit">Add deposit</button></div>
+</div></div>
+
+<div class="overlay" id="ovSavings"><div class="modal">
+  <h3>Move money</h3>
+  <div class="field"><label>Amount (₹)</label><input id="savAmt" type="number" min="0"></div>
+  <div class="field"><label>Note (optional)</label><input id="savNote"></div>
+  <div class="modal-actions"><button class="btn-cancel" id="savWithdraw">Withdraw</button><button class="btn-primary" id="savDeposit">Deposit</button></div>
+</div></div>
+
+<div class="overlay" id="ovBorrow"><div class="modal">
+  <h3>Borrowed money</h3>
+  <div class="field"><label>Amount (₹)</label><input id="bAmt" type="number" min="0"></div>
+  <div class="field"><label>From</label><select id="bLender"></select>
+    <div id="bLenderAdd" class="add-sub-row" style="display:none"><input id="bLenderNew" placeholder="New lender"><button type="button" id="bLenderAddBtn">Add</button></div>
+  </div>
+  <div class="row2">
+    <div class="field"><label>Title (optional)</label><input id="bTitle"></div>
+    <div class="field"><label>Date</label><input id="bDate" type="date"></div>
+  </div>
+  <div class="modal-actions"><button class="btn-cancel" data-close="ovBorrow">Cancel</button><button class="btn-primary" id="saveBorrow">Save</button></div>
+</div></div>
+
+<div class="overlay" id="ovConfirm"><div class="modal">
+  <h3>Not enough in your wallet</h3>
+  <p id="confirmMsg" style="font-size:13px;color:var(--ink-soft);line-height:1.5;"></p>
+  <div class="modal-actions"><button class="btn-cancel" id="confirmNo">No, cancel</button><button class="btn-primary" id="confirmYes">Yes, use savings</button></div>
+</div></div>
+
+<div class="overlay" id="ovPending"><div class="modal">
+  <h3>Waiting to be settled</h3>
+  <h4 style="font-size:12px;color:var(--ink-soft);margin:10px 0 6px;">Borrowed money</h4>
+  <div id="pendBorrows"></div>
+  <h4 style="font-size:12px;color:var(--ink-soft);margin:16px 0 6px;">Future expenses — already deducted</h4>
+  <div id="pendFuture"></div>
+  <div class="modal-actions"><button class="btn-cancel" style="flex:none;width:100%" data-close="ovPending">Close</button></div>
+</div></div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

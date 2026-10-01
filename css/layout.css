@@ -1,0 +1,84 @@
+/* ---------- layout.css : app shell, sidebar, header, panels ---------- */
+.app-shell{
+  display:flex; height:100vh; padding:16px; gap:16px;
+}
+
+/* ---- Sidebar ---- */
+.sidebar{
+  width:250px; flex-shrink:0; background:var(--sidebar-bg); color:var(--sidebar-text);
+  border-radius:var(--radius-lg); padding:22px 16px; display:flex; flex-direction:column;
+  transition:width .32s cubic-bezier(.4,0,.2,1), padding .32s cubic-bezier(.4,0,.2,1);
+  overflow:hidden;
+}
+.sidebar.collapsed{width:84px; padding:22px 12px;}
+.sidebar-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:28px;}
+.brand{display:flex; align-items:center; gap:8px; font-family:'Spectral',serif; font-weight:600; font-size:19px; white-space:nowrap;}
+.collapse-btn{
+  width:26px; height:26px; border-radius:50%; border:1px solid var(--sidebar-line); background:var(--sidebar-hover);
+  color:var(--sidebar-text); display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:transform .32s cubic-bezier(.4,0,.2,1), background .15s ease;
+}
+.sidebar.collapsed .collapse-btn{transform:rotate(180deg);}
+.collapse-btn:hover{background:var(--sidebar-line);}
+
+.nav-group-label{font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--sidebar-dim); margin:18px 4px 8px;}
+.sidebar.collapsed .nav-group-label, .sidebar.collapsed .nav-label{opacity:0; pointer-events:none;}
+.nav-list{display:flex; flex-direction:column; gap:2px;}
+.nav-item{
+  display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:var(--radius-sm);
+  color:var(--sidebar-dim); border-left:3px solid transparent; white-space:nowrap; overflow:hidden;
+  transition:background .18s ease, color .18s ease, border-color .18s ease;
+}
+.nav-item svg{flex-shrink:0; width:18px; height:18px;}
+.nav-item:hover{background:var(--sidebar-hover); color:var(--sidebar-text);}
+.nav-item.active{background:var(--sidebar-hover); color:var(--sidebar-active); border-left-color:var(--sidebar-active);}
+.nav-label{transition:opacity .2s ease;}
+.sidebar-spacer{flex:1;}
+.logout-item{margin-top:8px;}
+
+/* ---- Main column ---- */
+.main{flex:1; min-width:0; display:flex; flex-direction:column; overflow-y:auto;}
+.header{display:flex; flex-direction:column; gap:18px; margin-bottom:22px;}
+.header-row{display:flex; align-items:center; gap:16px;}
+.searchbar{
+  flex:1; display:flex; align-items:center; gap:10px; background:var(--white); border:1px solid var(--rule);
+  border-radius:var(--radius-pill); padding:10px 16px; box-shadow:var(--shadow-sm);
+}
+.searchbar input{border:none; outline:none; background:none; flex:1; font-size:13.5px; color:var(--ink);}
+.search-filters{display:flex; align-items:center; gap:0; font-size:11.5px; color:var(--ink-soft);}
+.search-filters span{padding:0 10px; border-left:1px dashed var(--rule);}
+.search-filters span:first-child{border-left:none;}
+.icon-btn{
+  width:38px; height:38px; border-radius:50%; background:var(--white); border:1px solid var(--rule);
+  display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-sm);
+}
+.icon-btn:hover{background:var(--paper); transform:translateY(-1px);}
+
+.greet-row{display:flex; align-items:center; justify-content:space-between;}
+.greet-row h1{font-size:28px; font-weight:600;}
+.greet-actions{display:flex; align-items:center; gap:10px; position:relative;}
+
+.page{display:none;}
+.page.active{display:block; animation:fadeSlideIn .3s ease both;}
+
+.panels{display:grid; grid-template-columns:1.4fr 1fr; gap:18px; align-items:start;}
+.panel{
+  background:var(--white); border:1px solid var(--rule); border-radius:var(--radius-lg); padding:18px;
+  box-shadow:var(--shadow-sm);
+}
+.panel-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;}
+.side-col{display:flex; flex-direction:column; gap:14px;}
+
+/* ---- dashboard row + schedule columns ---- */
+.dash-row{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; align-items:start;}
+.schedule-cols{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; align-items:start;}
+.day-title{font-size:20px; font-weight:600; margin:0 0 14px;}
+
+@media (max-width:1100px){
+  .schedule-cols{grid-template-columns:1fr;}
+}
+@media (max-width:980px){
+  .panels{grid-template-columns:1fr;}
+  .dash-row{grid-template-columns:1fr;}
+  .sidebar{position:fixed; z-index:20; height:calc(100vh - 32px);}
+}
