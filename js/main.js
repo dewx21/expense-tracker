@@ -4,7 +4,7 @@ import { todayISO } from './utils.js';
 import { initSidebar } from './sidebar.js';
 import { openModal, initAddPopover, openEventModal, openNoteModal } from './modals.js';
 import { openTaskModal } from './tasks.js';
-import { renderWallet, renderSavings, renderBorrows, renderPendingCount, renderCatTotals } from './finance.js';
+import { openExpenseModal, renderWallet, renderSavings, renderBorrows, renderPendingCount, renderCatTotals } from './finance.js';
 import { selected, renderSchedulePage } from './calendar.js';
 import { initStats } from './stats.js';
 import { signIn, trySilentSignIn, signOut, hasSignedInBefore, getUser } from './auth.js';
@@ -26,6 +26,7 @@ initAddPopover({
   onEvent: () => openEventModal(selected),
   onNote: () => openNoteModal(selected)
 });
+document.getElementById('addExpenseOpt').onclick = () => openExpenseModal(selected);
 initStats();
 
 document.getElementById('todayJump').onclick = () => { window.dispatchEvent(new CustomEvent('data:changed')); };
